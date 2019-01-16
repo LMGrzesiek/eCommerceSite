@@ -34,14 +34,12 @@ namespace eCommerceSite
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<eCommerceContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddDbContext<data.eCommerceContext>(options => { options.UseSqlServer(Configuration.GetConnectionString("eCommerceConnection")); });
+                    Configuration.GetConnectionString("eCommerceConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<eCommerceContext>();
 
             services.AddTransient((s) => { return new System.Data.SqlClient.SqlConnection(Configuration.GetConnectionString("AdventureWorksConnection")); });
 

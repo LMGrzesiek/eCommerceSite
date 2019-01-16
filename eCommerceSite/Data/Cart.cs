@@ -2,26 +2,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace eCommerceSite.data
+namespace eCommerceSite.Data
 {
-    //YouTube tutorial. Probably doesn't make sense.
-    private readonly ApplicationDbContext _applicationDbContext;
 
-    private Cart(ApplicationDbContext applicationDbContext)
+    public class Cart
     {
-        _applicationDbContext = applicationDbContext;
-    }
-
-    public partial class Cart
-    {
-        public int CartId { get; set; }
-
-        public List<CartItem> CartItems { get; set; }
-
-    }
-
-    public static Cart GetCart(IServiceProvider services)
-    {
-        //???
+        public Cart()
+        {
+            this.CartItems = new HashSet<CartItem>();
+        }
+        public int CartID { get; set; }
+        public ApplicationUser User { get; set; }
+        public string AnonymousIdentifier { get; set; }
+        public ICollection<CartItem> CartItems { get; set; }
     }
 }

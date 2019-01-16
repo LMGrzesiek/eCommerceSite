@@ -1,0 +1,28 @@
+﻿@model eCommerceSite.Data.Cart
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Cart</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AnonymousIdentifier)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AnonymousIdentifier)
+        </dd>
+    </dl>
+</div>
+@foreach(var item in Model.CartItems)
+{
+    <p>@item.Card.Name : @item.Quantity</p>
+}
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CartID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

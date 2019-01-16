@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace eCommerceSite.data
+namespace eCommerceSite.Data
 {
     public partial class Address
     {
@@ -12,5 +12,7 @@ namespace eCommerceSite.data
         public string State { get; set; }
         public int? PostalCode { get; set; }
         public int? PhoneNumber { get; set; }
+        
+        public ApplicationUser User { get; set; }
     }
 }

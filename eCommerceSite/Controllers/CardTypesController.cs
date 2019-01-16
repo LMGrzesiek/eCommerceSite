@@ -11,16 +11,16 @@ namespace eCommerceSite.Controllers
 {
     public class CardTypesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly eCommerceContext _context;
 
-        public CardTypesController(ApplicationDbContext context)
+        public CardTypesController(eCommerceContext context)
         {
             _context = context;
 
 
-            if (context.CardTypes.Count() == 0)
+            if (context.Cards.Count() == 0)
             {
-                context.CardTypes.Add(new CardType { Name = "Ebb/Flow", Description = "New flip card", ImageUrl = "https://i.redd.it/65jdkeziw9521.png", Price = 14.99m, Quantity = 1 });
+                context.Cards.Add(new Card { Name = "Ebb/Flow", Description = "New flip card", ImageUrl = "https://i.redd.it/65jdkeziw9521.png", Price = 14.99m, Quantity = 1 });
                 context.SaveChanges();
             }
         }
@@ -30,7 +30,7 @@ namespace eCommerceSite.Controllers
         // GET: CardTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CardTypes.ToListAsync());
+            return View(await _context.Cards.ToListAsync());
         }
 
         public IActionResult add(int quantity, int id)
@@ -43,7 +43,7 @@ namespace eCommerceSite.Controllers
             if (User.Identity.IsAuthenticated) //All controllers and views have a "user" property which I can check.  This returns true if they are logged in, false otherwise
             {
                 username = User.Identity.Name;
-                cart = _context.Carts.Include(x => x.CartItems).ThenInclude(x => x.CardType).FirstOrDefault(c => c.UserName == username);
+                cart = _context.Carts.Include(x => x.CartItems).ThenInclude(x => x.Card).FirstOrDefault(c => c.User.UserName == username);
             }
             else
             {
@@ -65,23 +65,24 @@ namespace eCommerceSite.Controllers
                 cart = new Cart
                 {
                     AnonymousIdentifier = anonymousIdentifier,
-                    UserName = username
+                    User = _context.Users.FirstOrDefault(x => x.UserName == username)
                 };
+                
                 _context.Carts.Add(cart);
                 _context.SaveChanges();
             }
             //Once I get past that last block, I will have a cart (either a completely new one, or an existing one)
             //I now need to see if the cart contains this product
 
-            CartItem cartItem = _context.CartItems.FirstOrDefault(x => x.CartID == cart.ID && x.CardTypeID == id);
+            CartItem cartItem = _context.CartItems.FirstOrDefault(x => x.CartID == cart.CartID && x.CardID == id);
             //If that line returns NULL, it's a new CartItem
             if(cartItem == null)
             {
                 cartItem = new CartItem
                 {
-                    CartID = cart.ID,
+                    CartID = cart.CartID,
                     Quantity = 0,
-                    CardTypeID = id
+                    CardID = id
                 };
                 _context.CartItems.Add(cartItem);
             }

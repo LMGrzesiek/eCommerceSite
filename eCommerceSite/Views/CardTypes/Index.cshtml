@@ -1,4 +1,4 @@
-﻿@model IEnumerable<eCommerceSite.Data.CardType>
+﻿@model IEnumerable<eCommerceSite.Data.Card>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,7 @@
             <form class="form-inline" asp-action="add" asp-controller="CardTypes" method="get">
                 <label for="quantity">Quantity</label>
                 <input class="form-control" type="number" value="1" min="1" max="10" name="quantity">
-                <input type="hidden" value="@cardType.ID" name="id" />
+                <input type="hidden" value="@cardType.CardID" name="id" />
                 <button class="btn btn-default" onclick="location.href='@Url.Action("Index", "Cart")'">Add To Cart</button>
             </form>
         </div>

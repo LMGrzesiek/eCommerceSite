@@ -9,9 +9,9 @@ using eCommerceSite.Data;
 
 namespace eCommerceSite.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190115201334_FlyingMonkeys4")]
-    partial class FlyingMonkeys4
+    [DbContext(typeof(eCommerceContext))]
+    [Migration("20190116173259_Identity")]
+    partial class Identity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,12 +21,39 @@ namespace eCommerceSite.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("eCommerceSite.Data.Address", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AddressLine1");
+
+                    b.Property<string>("AddressLine2");
+
+                    b.Property<string>("City");
+
+                    b.Property<int?>("PhoneNumber");
+
+                    b.Property<int?>("PostalCode");
+
+                    b.Property<string>("State");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("eCommerceSite.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<int?>("AddressId");
+
+                    b.Property<int?>("CartId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -67,6 +94,14 @@ namespace eCommerceSite.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId")
+                        .IsUnique()
+                        .HasFilter("[AddressId] IS NOT NULL");
+
+                    b.HasIndex("CartId")
+                        .IsUnique()
+                        .HasFilter("[CartId] IS NOT NULL");
+
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -78,9 +113,9 @@ namespace eCommerceSite.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("eCommerceSite.Data.CardType", b =>
+            modelBuilder.Entity("eCommerceSite.Data.Card", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("CardID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -99,45 +134,85 @@ namespace eCommerceSite.Data.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.HasKey("ID");
+                    b.HasKey("CardID");
 
-                    b.ToTable("CardTypes");
+                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("eCommerceSite.Data.Cart", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("CartID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AnonymousIdentifier");
 
-                    b.Property<string>("UserName");
+                    b.Property<int?>("CardID");
 
-                    b.HasKey("ID");
+                    b.HasKey("CartID");
+
+                    b.HasIndex("CardID");
 
                     b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("eCommerceSite.Data.CartItem", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("CartItemID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CardTypeID");
+                    b.Property<int>("CardID");
 
                     b.Property<int>("CartID");
 
                     b.Property<int>("Quantity");
 
-                    b.HasKey("ID");
+                    b.HasKey("CartItemID");
 
-                    b.HasIndex("CardTypeID");
+                    b.HasIndex("CardID");
 
                     b.HasIndex("CartID");
 
                     b.ToTable("CartItems");
+                });
+
+            modelBuilder.Entity("eCommerceSite.Data.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Details");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("eCommerceSite.Data.OrderItem", b =>
+                {
+                    b.Property<int>("OrderItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CardID");
+
+                    b.Property<int>("OrderID");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("OrderItemID");
+
+                    b.HasIndex("CardID");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -254,16 +329,54 @@ namespace eCommerceSite.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("eCommerceSite.Data.ApplicationUser", b =>
+                {
+                    b.HasOne("eCommerceSite.Data.Address", "Address")
+                        .WithOne("User")
+                        .HasForeignKey("eCommerceSite.Data.ApplicationUser", "AddressId");
+
+                    b.HasOne("eCommerceSite.Data.Cart", "Cart")
+                        .WithOne("User")
+                        .HasForeignKey("eCommerceSite.Data.ApplicationUser", "CartId");
+                });
+
+            modelBuilder.Entity("eCommerceSite.Data.Cart", b =>
+                {
+                    b.HasOne("eCommerceSite.Data.Card")
+                        .WithMany("Carts")
+                        .HasForeignKey("CardID");
+                });
+
             modelBuilder.Entity("eCommerceSite.Data.CartItem", b =>
                 {
-                    b.HasOne("eCommerceSite.Data.CardType", "CardType")
+                    b.HasOne("eCommerceSite.Data.Card", "Card")
                         .WithMany()
-                        .HasForeignKey("CardTypeID")
+                        .HasForeignKey("CardID")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("eCommerceSite.Data.Cart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("eCommerceSite.Data.Order", b =>
+                {
+                    b.HasOne("eCommerceSite.Data.ApplicationUser")
+                        .WithMany("Orders")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("eCommerceSite.Data.OrderItem", b =>
+                {
+                    b.HasOne("eCommerceSite.Data.Card", "Card")
+                        .WithMany()
+                        .HasForeignKey("CardID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("eCommerceSite.Data.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
