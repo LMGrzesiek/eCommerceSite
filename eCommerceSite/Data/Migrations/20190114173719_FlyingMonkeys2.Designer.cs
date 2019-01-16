@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerceSite.Data;
 
 namespace eCommerceSite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190114173719_FlyingMonkeys2")]
+    partial class FlyingMonkeys2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,71 +88,11 @@ namespace eCommerceSite.Data.Migrations
 
                     b.Property<DateTime?>("DateLastModified");
 
-                    b.Property<string>("Description");
-
-                    b.Property<string>("ImageUrl");
-
-                    b.Property<string>("Name");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("Money");
-
-                    b.Property<int>("Quantity");
+                    b.Property<string>("name");
 
                     b.HasKey("ID");
 
                     b.ToTable("CardTypes");
-                });
-
-            modelBuilder.Entity("eCommerceSite.data.Cart", b =>
-                {
-                    b.Property<int>("CartId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CookieId");
-
-                    b.Property<DateTime?>("DateAdded");
-
-                    b.HasKey("CartId");
-
-                    b.ToTable("Cart");
-                });
-
-            modelBuilder.Entity("eCommerceSite.Data.Cart", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AnonymousIdentifier");
-
-                    b.Property<string>("UserName");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("eCommerceSite.Data.CartItem", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CardTypeID");
-
-                    b.Property<int>("CartID");
-
-                    b.Property<int>("Quantity");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CardTypeID");
-
-                    b.HasIndex("CartID");
-
-                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -265,19 +207,6 @@ namespace eCommerceSite.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("eCommerceSite.Data.CartItem", b =>
-                {
-                    b.HasOne("eCommerceSite.Data.CardType", "CardType")
-                        .WithMany()
-                        .HasForeignKey("CardTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("eCommerceSite.Data.Cart", "Cart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartID")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

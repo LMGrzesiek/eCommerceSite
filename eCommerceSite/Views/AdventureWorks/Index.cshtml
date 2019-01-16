@@ -1,0 +1,36 @@
+﻿@model CodingTemple.DotNet.ShovelStore.Models.AdventureWorks.TopSaleReport
+@{
+    ViewData["Title"] = "Index";
+}
+<h2>Index</h2>
+<form>
+    <select class="form-control" name="id">
+        @foreach (var state in (Dictionary<int, string>)ViewBag.states)
+        {
+            <option value="@state.Key">@state.Value</option>
+        }
+    </select>
+    <input type="submit" value="Show Report" class="btn btn-block btn-primary" />
+</form>
+<h2>Top Sales by Quantity</h2>
+<table class="table">
+    @foreach (var row in Model.TopSaleByQuantities)
+    {
+        <tr>
+            <td>@row.Name</td>
+            <td>@row.Description</td>
+            <td>@row.OrderQuantity</td>zs
+        </tr>
+    }
+</table>
+<h2>Top Sales by Dollar</h2>
+<table class="table">
+    @foreach (var row in Model.TopSaleByDollars)
+    {
+        <tr>
+            <td>@row.Name</td>
+            <td>@row.Description</td>
+            <td>@row.TotalMoney.ToString("c")</td>
+        </tr>
+    }
+</table>

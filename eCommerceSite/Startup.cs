@@ -37,8 +37,14 @@ namespace eCommerceSite
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+
+            services.AddDbContext<data.eCommerceContext>(options => { options.UseSqlServer(Configuration.GetConnectionString("eCommerceConnection")); });
+
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddTransient((s) => { return new System.Data.SqlClient.SqlConnection(Configuration.GetConnectionString("AdventureWorksConnection")); });
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

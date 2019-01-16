@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerceSite.Data;
 
 namespace eCommerceSite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190115201334_FlyingMonkeys4")]
+    partial class FlyingMonkeys4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,21 +102,6 @@ namespace eCommerceSite.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("CardTypes");
-                });
-
-            modelBuilder.Entity("eCommerceSite.data.Cart", b =>
-                {
-                    b.Property<int>("CartId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CookieId");
-
-                    b.Property<DateTime?>("DateAdded");
-
-                    b.HasKey("CartId");
-
-                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("eCommerceSite.Data.Cart", b =>
