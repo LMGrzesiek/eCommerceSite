@@ -96,7 +96,43 @@ namespace eCommerceSite.Controllers
 
 
         }
-        
+
+        public async Task<IActionResult> Update(int id, int quantity)
+        {
+            string username = null;
+            string anonymousIdentifier = null;
+            Cart cart = null;
+            if (User.Identity.IsAuthenticated)   //All controllers and views have a "User" property which I can check.  This returns True if they are logged in, false otherwise
+            {
+                username = User.Identity.Name;   //I can track carts by user name
+                cart = _context.Carts.Include(x => x.CartItems).ThenInclude(x => x.Card).FirstOrDefault(c => c.User.UserName == username);
+            }
+            else
+            {
+                anonymousIdentifier = string.Empty;
+                if (Request.Cookies.ContainsKey(ANONYMOUS_IDENTIFIER))
+                {
+                    anonymousIdentifier = Request.Cookies[ANONYMOUS_IDENTIFIER];
+                }
+                else
+                {
+                    anonymousIdentifier = Guid.NewGuid().ToString();
+                    Response.Cookies.Append(ANONYMOUS_IDENTIFIER, anonymousIdentifier);
+                }
+
+                cart = await _context.Carts.Include(x => x.CartItems).ThenInclude(x => x.Card).FirstOrDefaultAsync(c => c.AnonymousIdentifier == anonymousIdentifier);
+            }
+            CartItem item = cart.CartItems.FirstOrDefault(x => x.CardID == id);
+
+            if (item != null)
+            {
+                item.Quantity = quantity;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "Cart");
+        }
+
 
     }
 }

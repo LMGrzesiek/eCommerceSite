@@ -31,7 +31,13 @@
             <td>@item.Card.Name</td>
             <td><img class="img-responsive" style="max-height:3em" src="@item.Card.ImageUrl" /></td>
             <td>@item.Card.Price.ToString("c")</td>
-            <td>@item.Quantity</td>
+            <td>
+                <form asp-controller="cart" asp-action="update">
+                    <input type="hidden" value="@item.CardID" name="id" />
+                    <input type="number" value="@item.Quantity" min="1" max="10" name="quantity" onchange="this.form.submit()" class="form-control" />
+                </form>
+            </td>
+
             <td>@((item.Card.Price * item.Quantity).ToString("c"))</td>
             <td>
                 <form method="get" asp-action="remove" asp-controller="cart">
