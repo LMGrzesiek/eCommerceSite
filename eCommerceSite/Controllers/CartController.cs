@@ -53,6 +53,50 @@ namespace eCommerceSite.Controllers
 
             return View(cart);
         }
+
+        public async Task<IActionResult> Remove(int id)
+        {
+            //Step 1: Get Cart
+            string username = null;
+            string anonymousIdentifier = null;
+            Cart cart = null;
+            if (User.Identity.IsAuthenticated) //All controllers and views have a "user" property which I can check.  This returns true if they are logged in, false otherwise
+            {
+                username = User.Identity.Name;
+                cart = _context.Carts.Include(x => x.CartItems).ThenInclude(x => x.Card).FirstOrDefault(c => c.User.UserName == username);
+            }
+            else
+            {
+                anonymousIdentifier = string.Empty;
+                if (Request.Cookies.ContainsKey(ANONYMOUS_IDENTIFIER))
+                {
+                    anonymousIdentifier = Request.Cookies[ANONYMOUS_IDENTIFIER];
+                }
+                else
+                {
+                    anonymousIdentifier = Guid.NewGuid().ToString();
+                    Response.Cookies.Append(ANONYMOUS_IDENTIFIER, anonymousIdentifier);
+                }
+                cart = await _context.Carts.Include(x => x.CartItems).ThenInclude(x => x.Card).FirstOrDefaultAsync(c => c.AnonymousIdentifier == anonymousIdentifier);
+            }
+            //Step 2: Find item in cart
+            CartItem item = cart.CartItems.FirstOrDefault(x => x.CardID == id);
+
+            //Once you find the item, remove it from the Context , and Save Changes:
+            if(item != null)
+            {
+
+
+                _context.CartItems.Remove(item);
+                await _context.SaveChangesAsync();
+                
+            }
+
+            return RedirectToAction("Index", "Cart");
+
+
+        }
         
+
     }
 }

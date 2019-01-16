@@ -6,18 +6,18 @@
 
 <h2>Purchase a Card</h2>
 
-@foreach (var cardType in Model)
+@foreach (var card in Model)
 {
     <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="@cardType.ImageUrl" alt="Card image cap">
+        <img class="card-img-top" src="@card.ImageUrl" alt="Card image cap">
         <div class="card-body">
-            <h5 class="card-title">@cardType.Name</h5>
-            <p class="card-text">@cardType.Price.ToString("c") - @cardType.Description</p>
+            <h5 class="card-title">@card.Name</h5>
+            <p class="card-text">@card.Price.ToString("c") - @card.Description</p>
             
             <form class="form-inline" asp-action="add" asp-controller="CardTypes" method="get">
                 <label for="quantity">Quantity</label>
                 <input class="form-control" type="number" value="1" min="1" max="10" name="quantity">
-                <input type="hidden" value="@cardType.CardID" name="id" />
+                <input type="hidden" value="@card.CardID" name="id" />
                 <button class="btn btn-default" onclick="location.href='@Url.Action("Index", "Cart")'">Add To Cart</button>
             </form>
         </div>

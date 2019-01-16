@@ -34,6 +34,13 @@ namespace eCommerceSite.Controllers
             return View();
         }
 
+        public IActionResult Cards()
+        {
+            ViewData["Message"] = "Your product inventory page.";
+
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
