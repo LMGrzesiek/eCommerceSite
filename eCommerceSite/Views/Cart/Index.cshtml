@@ -20,7 +20,7 @@ else
 
             <tr>
                 <td>@item.Card.Name</td>
-                <td><img class="img-responsive" style="max-height:3em" src="@item.Card.ImageUrl" /></td>
+                @*<td><img class="img-responsive" style="max-height:3em" src="@item.Card.ImageUrl" /></td>*@
                 <td>@item.Card.Price.ToString("c")</td>
                 <td>
                     <form asp-controller="cart" asp-action="update">
