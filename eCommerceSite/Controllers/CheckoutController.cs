@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eCommerceSite.Data;
+using eCommerceSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +18,16 @@ namespace eCommerceSite.Controllers
             _context = context;
         }
 
+        
         private const string ANONYMOUS_IDENTIFIER = "AnonymousIdentifier";
 
-
-        public async Task <IActionResult> Index()
+        
+        public async Task<IActionResult> Index()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task <IActionResult> Index(CheckoutViewModel model)
         {
             string username = null;
             string anonymousIdentifier = null;
@@ -45,10 +52,24 @@ namespace eCommerceSite.Controllers
                 cart = await _context.Carts.Include(x => x.CartItems).ThenInclude(x => x.Card).FirstOrDefaultAsync(c => c.AnonymousIdentifier == anonymousIdentifier);
             }
 
-            if (Request.Method == "POST")
+            if (ModelState.IsValid)
             {
+
+                //TODO: Before converting from a cart to an order, I should validate address + payment info against
+                //third party APIs (Braintree + SmartyStreets). If eithe rof these 3rd party APIs cannot process info
+                //successfully, I should add a ModelError and re-display the form.
                 Order order = new Order
                 {
+                    ContactEmail =model.Email,
+                    ContactPhoneNumber = model.PhoneNumber,
+                    ShippingStreet1 = model.Street1,
+                    ShippingStreet2 = model.Street2,
+                    ShippingCity = model.City,
+                    ShippingState = model.State,
+                    ShippingPostalCode = model.PostalCode,
+                    ShippingRecipient = model.Recipient,
+                    ShippingInstructions = model.Instructions,
+
                     PlacementDate = DateTime.UtcNow,
                     TrackingNumber = Guid.NewGuid().ToString().Substring(0, 8),
                     SubTotal = cart.CartItems.Sum(x => x.Quantity * x.Card.Price),
@@ -73,6 +94,9 @@ namespace eCommerceSite.Controllers
                 _context.Carts.Remove(cart);
                 Response.Cookies.Delete(ANONYMOUS_IDENTIFIER);
                 _context.SaveChanges();
+
+                //TODO: send out an email to the user who placed this order with their order details
+                //We'll use a third-party API, SendGrid, for this.
                 return RedirectToAction("Index", "Receipt", new { id = order.TrackingNumber });
             }
             return View();
