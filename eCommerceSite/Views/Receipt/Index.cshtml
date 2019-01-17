@@ -1,0 +1,23 @@
+﻿@model eCommerceSite.Data.Order
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Details for @Model.TrackingNumber</h2>
+<dl>
+    <dt>Order Date</dt>
+    <dd>@Model.PlacementDate.ToShortDateString()</dd>
+    <dt>Ship Date</dt>
+    <dd>@(Model.ShipDate.HasValue ? Model.ShipDate.Value.ToShortDateString() : "Not Shipped")</dd>
+    <dt>Delivered Date</dt>
+    <dd>@(Model.DeliveryDate.HasValue ? Model.DeliveryDate.Value.ToShortDateString() : "Not Shipped")</dd>
+</dl>
+
+<ul>
+    @foreach (var item in Model.OrderItems)
+    {
+        <li>@item.CardName</li>
+    }
+</ul>
+
+
