@@ -6,48 +6,44 @@
 
 <h2>Your Cart</h2>
 
-<div>
-    <h4>Cart</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.User.UserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.UserName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AnonymousIdentifier)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AnonymousIdentifier)
-        </dd>
-    </dl>
-</div>
-@foreach (var item in Model.CartItems)
+@if (Model == null || !Model.CartItems.Any())
+{
+    <div class="alert alert-warning">
+        <p>Your Cart is currently empty.  Try shopping for some beautiful custom Magic Cards!</p>
+    </div>
+}
+else
 {
     <table class="table">
-        <tr>
-            <td>@item.Card.Name</td>
-            <td><img class="img-responsive" style="max-height:3em" src="@item.Card.ImageUrl" /></td>
-            <td>@item.Card.Price.ToString("c")</td>
-            <td>
-                <form asp-controller="cart" asp-action="update">
-                    <input type="hidden" value="@item.CardID" name="id" />
-                    <input type="number" value="@item.Quantity" min="1" max="10" name="quantity" onchange="this.form.submit()" class="form-control" />
-                </form>
-            </td>
+        @foreach (var item in Model.CartItems)
+        {
 
-            <td>@((item.Card.Price * item.Quantity).ToString("c"))</td>
-            <td>
-                <form method="get" asp-action="remove" asp-controller="cart">
-                    <input type="hidden" name="id" value="@item.CardID" />
-                    <button class="btn btn-danger">Remove</button>
-                </form>
-            </td>
-        </tr>
-    </table>
-}
+            <tr>
+                <td>@item.Card.Name</td>
+                <td><img class="img-responsive" style="max-height:3em" src="@item.Card.ImageUrl" /></td>
+                <td>@item.Card.Price.ToString("c")</td>
+                <td>
+                    <form asp-controller="cart" asp-action="update">
+                        <input type="hidden" value="@item.CardID" name="id" />
+                        <input type="number" value="@item.Quantity" min="1" max="10" name="quantity" onchange="this.form.submit()" class="form-control" />
+                    </form>
+                </td>
+
+                <td>@((item.Card.Price * item.Quantity).ToString("c"))</td>
+                <td>
+                    <form method="get" asp-action="remove" asp-controller="cart">
+                        <input type="hidden" name="id" value="@item.CardID" />
+                        <button class="btn btn-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </table>
+
+        <a asp-action="index" asp-controller="checkout" onclick="location.href='@Url.Action("Index", "Checkout")'" class="btn btn-primary">Proceed to Checkout</a>
+    }
+
+
 
 
 

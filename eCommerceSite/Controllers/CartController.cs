@@ -45,10 +45,7 @@ namespace eCommerceSite.Controllers
                 cart = await _context.Carts.Include(x => x.CartItems).ThenInclude(x => x.Card).FirstOrDefaultAsync(c => c.AnonymousIdentifier == anonymousIdentifier);
             }
 
-            if (cart == null)
-            {
-                return NotFound();
-            }
+            
             
 
             return View(cart);
