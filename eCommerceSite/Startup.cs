@@ -43,6 +43,11 @@ namespace eCommerceSite
 
             services.AddTransient((s) => { return new System.Data.SqlClient.SqlConnection(Configuration.GetConnectionString("AdventureWorksConnection")); });
 
+            services.AddTransient<SendGrid.ISendGridClient>((s) =>
+            {
+                return new SendGrid.SendGridClient(Configuration.GetValue<string>("SendGrid:Key"));
+            });
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

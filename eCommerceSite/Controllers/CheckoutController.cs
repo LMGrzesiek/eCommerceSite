@@ -6,16 +6,19 @@ using eCommerceSite.Data;
 using eCommerceSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SendGrid;
 
 namespace eCommerceSite.Controllers
 {
     public class CheckoutController : Controller
     {
         private readonly eCommerceContext _context;
+        private readonly ISendGridClient _sendGridClient;
 
-        public CheckoutController(eCommerceContext context)
+        public CheckoutController(eCommerceContext context, ISendGridClient sendGridClient)
         {
             _context = context;
+            _sendGridClient = sendGridClient;
         }
 
         
@@ -94,6 +97,25 @@ namespace eCommerceSite.Controllers
                 _context.Carts.Remove(cart);
                 Response.Cookies.Delete(ANONYMOUS_IDENTIFIER);
                 _context.SaveChanges();
+
+                var message = new SendGrid.Helpers.Mail.SendGridMessage
+                {
+                    From = new SendGrid.Helpers.Mail.EmailAddress("admin@jacesplace.com", "Card Admins"),
+                    Subject = "Receipt for order #" + order.TrackingNumber,
+                    HtmlContent = "Thanks for your order!"
+                };
+                message.AddTo(model.Email);
+
+                var result = await _sendGridClient.SendEmailAsync(message);
+                //This can be helpful debug code, but we wont display it out to the user:
+                var responseBody = await result.DeserializeResponseBodyAsync(result.Body);
+                if (responseBody != null)
+                {
+                    foreach (var body in responseBody)
+                    {
+                        Console.WriteLine(body.Key + ":" + body.Value);
+                    }
+                }
 
                 //TODO: send out an email to the user who placed this order with their order details
                 //We'll use a third-party API, SendGrid, for this.
