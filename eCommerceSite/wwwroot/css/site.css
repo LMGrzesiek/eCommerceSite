@@ -19,14 +19,12 @@ body {
     text-align: justify;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+card{
+    
+    text-align:center;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
+.card-body{
     width: 100%;
 }
 
