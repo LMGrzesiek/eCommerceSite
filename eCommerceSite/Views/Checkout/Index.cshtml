@@ -3,8 +3,11 @@
     ViewData["Title"] = "Checkout";
 }
 
-
-@Html.ValidationSummary(false)
+@if (!ViewData.ModelState.IsValid)
+{<div class="alert-danger">
+    @Html.ValidationSummary(false)
+</div>
+}
 
 <h2>Checkout</h2>
 <form method="post" id="checkoutForm">
@@ -56,7 +59,7 @@
         <label for="expiration-date">Expiration Date</label>
         <div class="form-control" id="expiration-date"></div>
     </div>
-    <input type="hidden" id="braintree-nonce" name="braintreeNonce"/>
+    <input type="hidden" id="braintree-nonce" name="braintreeNonce" />
 
 
     <button class="btn btn-primary">Place Order</button>

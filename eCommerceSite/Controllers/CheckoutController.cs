@@ -63,15 +63,41 @@ namespace eCommerceSite.Controllers
 
             if (ModelState.IsValid)
             {
+                CustomerRequest customer = new CustomerRequest();
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = _context.Users.Single(x => x.UserName == User.Identity.Name);
+                    customer.Email = user.Email;
+                    customer.FirstName = user.FirstName;
+                    customer.LastName = user.LastName;
+                    customer.Phone = user.PhoneNumber;
+                }
+                else
+                {
+                    customer.Email = model.Email;
+                    customer.Phone = model.PhoneNumber;
+                }
+
                 TransactionRequest transactionRequest = new TransactionRequest
                 {
-                    Amount = cart.CartItems.Sum(x => x.Quantity * x.Card.Price),
-                    PaymentMethodNonce = braintreeNonce
+                    Amount = cart.CartItems.Sum(cartItem => cartItem.Quantity * cartItem.Card.Price),
+                    PaymentMethodNonce = model.BraintreeNonce,
+                    Customer = customer,
+                    LineItems = cart.CartItems.Select(cartItem => new TransactionLineItemRequest
+                    {
+                        UnitAmount = cartItem.Card.Price,
+                        Name = cartItem.Card.Name,
+                        Description = cartItem.Card.Description,
+                        Quantity = cartItem.Quantity,
+                        TotalAmount = cartItem.Quantity * cartItem.Card.Price,
+                        ProductCode = cartItem.CardID.ToString(),
+                        LineItemKind = TransactionLineItemKind.DEBIT
+                    }).ToArray()
                 };
                 var transactionResult = await _braintreeGateway.Transaction.SaleAsync(transactionRequest);
-                
-                    //TODO: Before Converting from a Cart to an order, I should validate address + payment info against third party APIs (Braintree + SmartyStreets).  If either of these 3rd party APIs cannot process the info successfully, I should add a ModelError and re-display the form.
-                    Order order = new Order
+
+                //TODO: Before Converting from a Cart to an order, I should validate address + payment info against third party APIs (Braintree + SmartyStreets).  If either of these 3rd party APIs cannot process the info successfully, I should add a ModelError and re-display the form.
+                Order order = new Order
                     {
                         ContactEmail = model.Email,
                         ContactPhoneNumber = model.PhoneNumber,

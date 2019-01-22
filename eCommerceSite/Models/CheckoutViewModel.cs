@@ -34,5 +34,8 @@ namespace eCommerceSite.Models
         public string Recipient { get; set; }
         public string Instructions { get; set; }
 
+        [Required(ErrorMessage = "Ivalid or incomplete credit card")]
+        public string BraintreeNonce { get; set; }
+
     }
 }
