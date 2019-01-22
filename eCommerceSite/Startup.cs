@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using eCommerceSite.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SendGrid;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace eCommerceSite
 {
@@ -43,10 +45,17 @@ namespace eCommerceSite
 
             services.AddTransient((s) => { return new System.Data.SqlClient.SqlConnection(Configuration.GetConnectionString("AdventureWorksConnection")); });
 
-            services.AddTransient<SendGrid.ISendGridClient>((s) =>
+            services.AddTransient<ISendGridClient>((s) =>
             {
-                return new SendGrid.SendGridClient(Configuration.GetValue<string>("SendGrid:Key"));
+                return new SendGridClient(Configuration.GetValue<string>("SendGrid:Key"));
             });
+
+            services.AddTransient<IEmailSender>((s) =>
+            {
+                return new EmailSender(s.GetService<ISendGridClient>());
+            });
+
+
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
