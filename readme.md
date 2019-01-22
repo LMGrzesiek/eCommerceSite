@@ -23,3 +23,9 @@ This application requires that a SendGrid API key be set before it can be run.  
 ```
 dotnet user-secrets set "SendGrid:Key" "{YOUR KEY VALUE HERE}"
 ```
+
+## Braintree Configuration
+This application requires that a Braintree API key be set before it can be run.  You'll need to provision an API key from your own Braingree account prior to 
+
+```
+dotnet user-secrets set "Braintre:Environment"

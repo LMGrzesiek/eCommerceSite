@@ -8,30 +8,34 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Braintree;
 
-namespace CodingTemple.DotNet.ShovelStore.Controllers
+namespace eCommerceSite.Controllers
 {
     public class CheckoutController : Controller
     {
+        private const string ANONYMOUS_IDENTIFIER = "AnonymousIDentifier";
+
         private readonly eCommerceContext _context;
         private readonly IEmailSender _emailSender;
+        private readonly IBraintreeGateway _braintreeGateway;
 
-        public CheckoutController(eCommerceContext context, IEmailSender emailSender)
+        public CheckoutController(eCommerceContext context, IEmailSender emailSender, IBraintreeGateway braintreeGateway)
         {
             _context = context;
             _emailSender = emailSender;
+            _braintreeGateway = braintreeGateway;
         }
-
-        private const string ANONYMOUS_IDENTIFIER = "AnonymousIdentifier";
 
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.BraintreeClientToken = await _braintreeGateway.ClientToken.GenerateAsync();
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(CheckoutViewModel model)
+        public async Task<IActionResult> Index(CheckoutViewModel model, string braintreeNonce)
         {
             string username = null;
             string anonymousIdentifier = null;
@@ -59,47 +63,62 @@ namespace CodingTemple.DotNet.ShovelStore.Controllers
 
             if (ModelState.IsValid)
             {
-                //TODO: Before Converting from a Cart to an order, I should validate address + payment info against third party APIs (Braintree + SmartyStreets).  If either of these 3rd party APIs cannot process the info successfully, I should add a ModelError and re-display the form.
-                Order order = new Order
+                TransactionRequest transactionRequest = new TransactionRequest
                 {
-                    ContactEmail = model.Email,
-                    ContactPhoneNumber = model.PhoneNumber,
-                    ShippingCity = model.City,
-                    ShippingPostalCode = model.PostalCode,
-                    ShippingStreet1 = model.Street1,
-                    ShippingState = model.State,
-                    PlacementDate = DateTime.UtcNow,
-                    TrackingNumber = Guid.NewGuid().ToString().Substring(0, 8),
-                    SubTotal = cart.CartItems.Sum(x => x.Quantity * x.Card.Price),
-                    Total = cart.CartItems.Sum(x => x.Quantity * x.Card.Price),
-                    OrderItems = cart.CartItems.Select(cartItem => new OrderItem
-                    {
-                        Quantity = cartItem.Quantity,
-                        UnitPrice = cartItem.Card.Price,
-                        CardID = cartItem.CardID,
-                        CardDescription = cartItem.Card.Description,
-                        CardName = cartItem.Card.Name,
-                        LineTotal = cartItem.Quantity * cartItem.Card.Price
-                    }).ToArray()
+                    Amount = cart.CartItems.Sum(x => x.Quantity * x.Card.Price),
+                    PaymentMethodNonce = braintreeNonce
                 };
-                _context.Orders.Add(order);
-                _context.Carts.Remove(cart);
-                Response.Cookies.Delete(ANONYMOUS_IDENTIFIER);
-                _context.SaveChanges();
+                var transactionResult = await _braintreeGateway.Transaction.SaleAsync(transactionRequest);
+                
+                    //TODO: Before Converting from a Cart to an order, I should validate address + payment info against third party APIs (Braintree + SmartyStreets).  If either of these 3rd party APIs cannot process the info successfully, I should add a ModelError and re-display the form.
+                    Order order = new Order
+                    {
+                        ContactEmail = model.Email,
+                        ContactPhoneNumber = model.PhoneNumber,
+                        ShippingCity = model.City,
+                        ShippingPostalCode = model.PostalCode,
+                        ShippingStreet1 = model.Street1,
+                        ShippingState = model.State,
+                        PlacementDate = DateTime.UtcNow,
+                        TrackingNumber = Guid.NewGuid().ToString().Substring(0, 8),
+                        SubTotal = cart.CartItems.Sum(x => x.Quantity * x.Card.Price),
+                        Total = cart.CartItems.Sum(x => x.Quantity * x.Card.Price),
+                        OrderItems = cart.CartItems.Select(cartItem => new OrderItem
+                        {
+                            Quantity = cartItem.Quantity,
+                            UnitPrice = cartItem.Card.Price,
+                            CardID = cartItem.CardID,
+                            CardDescription = cartItem.Card.Description,
+                            CardName = cartItem.Card.Name,
+                            LineTotal = cartItem.Quantity * cartItem.Card.Price
+                        }).ToArray()
+                    };
+                    _context.Orders.Add(order);
+                    _context.Carts.Remove(cart);
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        var user = _context.Users.Single(x => x.UserName == User.Identity.Name);
+                        user.Cart = null;
+                        user.CartId = null;
+                    }
+                    Response.Cookies.Delete(ANONYMOUS_IDENTIFIER);
+                    _context.SaveChanges();
 
-                await _emailSender.SendEmailAsync(
-                    model.Email,
-                    "Receipt for order #" + order.TrackingNumber,
-                    FormatOrderAsHtml(order, this.HttpContext.Request)
-                );
+                    await _emailSender.SendEmailAsync(
+                        model.Email,
+                        "Receipt for order #" + order.TrackingNumber,
+                        FormatOrderAsHtml(order, this.HttpContext.Request)
+                    );
+
+
+                    return RedirectToAction("Index", "Receipt", new { id = order.TrackingNumber });
 
                 
-                return RedirectToAction("Index", "Receipt", new { id = order.TrackingNumber });
             }
 
-            return View();
+                return View();
+            
         }
-
         private string FormatOrderAsHtml(Order order, HttpRequest httpRequest)
         {
             return string.Format(@"
@@ -121,6 +140,7 @@ namespace CodingTemple.DotNet.ShovelStore.Controllers
             </tr>
         ", item.CardName, item.CardDescription)))
             );
+        
         }
     }
 }
