@@ -39,6 +39,7 @@
         <label asp-for="PostalCode" class="control-label">Postal Code</label>
         <input type="text" asp-for="PostalCode" class="form-control" placeholder="ex: 90210" required />
     </div>
+    <button class="btn btn-default btn-block" disabled id="validate-address">Validate Address</button>
     <div class="form-group">
         <label asp-for="Recipient" class="control-label">Recipient Name (optional)</label>
         <input type="text" asp-for="Recipient" class="form-control" placeholder="Recipient Name" />
@@ -118,6 +119,76 @@
                     });
                 }, false);
             });
+        });
+    </script>
+    <!--SmartyStreets Script-->>
+    <script type="text/javascript">
+        var validateAddressButton = document.querySelector("#validate-address");
+        document.querySelectorAll("#Street1, #City, #State").forEach(e => {
+            e.addEventListener("change", (event) => {
+                var addressValidationEnabled = true;
+                document.querySelectorAll("#Street1, #City, #State").forEach(e2 => {
+                    if (e2.value.length == 0) {
+                        addressValidationEnabled = false;
+                    }
+                });
+                if (addressValidationEnabled) {
+                    validateAddressButton.removeAttribute('disabled');
+                } else {
+                    validateAddressButton.setAttribute('disabled', 'disabled');
+                }
+            })
+        })
+
+        validateAddressButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            var street = document.querySelector("#Street1").value;
+            var city = document.querySelector("#City").value;
+            var state = document.querySelector("#State").value;
+            var zipCode = document.querySelector("#PostalCode").value;
+            var requestUrl = "/Checkout/ValidateAddress?";
+            if (street != null && street.length > 0) {
+                requestUrl += "street=" + street + "&";
+            }
+            if (city != null && city.length > 0) {
+                requestUrl += "city=" + city + "&";
+            }
+            if (state != null && state.length > 0) {
+                requestUrl += "state=" + state + "&";
+            }
+            if (zipCode != null && zipCode.length > 0) {
+                requestUrl += "zipCode=" + zipCode + "&";
+            }
+            fetch(requestUrl).then((response) => {
+                response.json().then((json) => {
+                    if (json.length == 0) {
+                        validateAddressButton.classList.remove("btn-success");
+                        validateAddressButton.classList.add("btn-danger");
+                        document.querySelectorAll("#Street1, #City, #State, #PostalCode").forEach(e3 => {
+                            e3.parentNode.classList.add("has-error");
+                            e3.parentNode.classList.remove("has-success");
+                        });
+
+                    } else {
+                        validateAddressButton.classList.add("btn-success");
+                        validateAddressButton.classList.remove("btn-danger");
+                        document.querySelectorAll("#Street1, #City, #State, #PostalCode").forEach(e3 => {
+                            e3.parentNode.classList.add("has-success");
+                            e3.parentNode.classList.remove("has-error");
+                        });
+                        if (json[0].components.plus4_code != null && json[0].components.plus4_code.length > 0) {
+                            document.querySelector("#PostalCode").value = json[0].components.zipcode + "-" + json[0].components.plus4_code
+                        } else {
+                            document.querySelector("#PostalCode").value = json[0].components.zipcode;
+                        }
+                        document.querySelector("#Street1").value = json[0].delivery_line_1;
+                        document.querySelector("#City").value = json[0].components.city_name;
+                        document.querySelector("#State").value = json[0].components.state_abbreviation
+
+                    }
+                })
+
+            })
         });
     </script>
 }
