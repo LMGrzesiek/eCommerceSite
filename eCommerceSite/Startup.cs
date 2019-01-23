@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SendGrid;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using SmartyStreets;
 
 namespace eCommerceSite
 {
@@ -64,7 +65,13 @@ namespace eCommerceSite
                     Configuration.GetValue<string>("Braintree:PrivateKey"));
             });
 
-
+            services.AddTransient<SmartyStreets.IClient<SmartyStreets.USStreetApi.Lookup>>((s) =>
+            {
+                return new SmartyStreets.ClientBuilder(
+                    Configuration.GetValue<string>("SmartyStreets:AuthId"),
+                    Configuration.GetValue<string>("SmartyStreets:AuthToken")
+                ).BuildUsStreetApiClient();
+            });
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

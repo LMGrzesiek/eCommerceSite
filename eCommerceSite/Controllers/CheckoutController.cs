@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using eCommerceSite.Data;
 using eCommerceSite.Models;
@@ -9,6 +8,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Braintree;
+using SmartyStreets;
+using SmartyStreets.USStreetApi;
+using System.Linq;
 
 namespace eCommerceSite.Controllers
 {
@@ -19,12 +21,15 @@ namespace eCommerceSite.Controllers
         private readonly eCommerceContext _context;
         private readonly IEmailSender _emailSender;
         private readonly IBraintreeGateway _braintreeGateway;
+        private readonly IClient<Lookup> _usStreetClient;
 
-        public CheckoutController(eCommerceContext context, IEmailSender emailSender, IBraintreeGateway braintreeGateway)
+        public CheckoutController(eCommerceContext context, IEmailSender emailSender, IBraintreeGateway braintreeGateway, IClient<SmartyStreets.USStreetApi.Lookup> usStreetClient)
         {
             _context = context;
             _emailSender = emailSender;
             _braintreeGateway = braintreeGateway;
+            _usStreetClient = usStreetClient;
+
         }
 
 
@@ -32,6 +37,25 @@ namespace eCommerceSite.Controllers
         {
             ViewBag.BraintreeClientToken = await _braintreeGateway.ClientToken.GenerateAsync();
             return View();
+        }
+
+        public IActionResult ValidateAddress(string street, string street2, string city, string state, string zipCode)
+        {
+            if (string.IsNullOrEmpty(street) || string.IsNullOrEmpty(city) || string.IsNullOrEmpty(state))
+            {
+                return BadRequest("street, city, state, and zipCode are required");
+            }
+            SmartyStreets.USStreetApi.Lookup lookup = new Lookup
+            {
+                Street = street,
+                Street2 = street2,
+                City = city,
+                State = state,
+                ZipCode = zipCode
+            };
+            _usStreetClient.Send(lookup);
+
+            return Json(lookup.Result.ToArray());
         }
 
         [HttpPost]

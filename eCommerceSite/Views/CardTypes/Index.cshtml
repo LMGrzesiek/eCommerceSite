@@ -31,30 +31,42 @@
             </div>
         </div>*@
 
-<div class="wrapper col-sm-6">
-    <div class="product-img">
-        <img src="@card.ImageUrl" height="420" width="310">
-    </div>
-    <div class="product-info">
-        <div class="product-text">
-            <h1>@card.Name</h1>
-            @*<h2>by studio and friends</h2>*@
-            <p>@card.Description</p>
-            <p><span>@card.Price.ToString("c")</span></p>
+<div class="col-xs-12 col-sm-6">
+    <div class="well">
+        <div class="row">
 
-        </div>
-        <div style="text-align: left">
-            <form class="form-inline" asp-action="add" asp-controller="CardTypes" method="get">
-                <div class="row" id="card-row">
-                    <label for="quantity">Quantity</label>
-                    <input class="inline-form-control" type="number" value="1" min="1" max="@card.Quantity" />
+            <div class="col-xs-12 col-lg-6">
+                <div class="product-img">
+                    <img src="@card.ImageUrl" height="420" width="310">
                 </div>
-                <input type="hidden" value="@card.CardID" name="id" />
-                <div class="product-price-btn">
-                    <button class="button" onclick="location.href='@Url.Action("Index", "Cart")'">buy now</button>
-                </div>
-            </form>
+            </div>
+            <div class="col-xs-12 col-lg-6">
+                <h1>@card.Name</h1>
+                @*<h2>by studio and friends</h2>*@
+                <p>@card.Description</p>
+                <p><span>@card.Price.ToString("c")</span></p>
+                <form class="form-inline" asp-action="add" asp-controller="CardTypes" method="get">
+                    <div class="row" id="card-row">
+                        <label for="quantity">Quantity</label>
+                        <input class="inline-form-control" type="number" value="1" min="1" max="@card.Quantity" />
+                    </div>
+                    <input type="hidden" value="@card.CardID" name="id" />
+                    <div class="product-price-btn">
+                        <button class="button" onclick="location.href='@Url.Action("Index", "Cart")'">buy now</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+    @*
+        <div class="product-info">
+            <div class="product-text">
+
+
+            </div>
+            <div style="text-align: left">
+
+            </div>
+        </div>*@
 </div>
 }

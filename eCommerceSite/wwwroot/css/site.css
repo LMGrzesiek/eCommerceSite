@@ -7,7 +7,9 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Cardo', serif;
-    background-image: linear-gradient(#E3E3E3,#F6F6F8);
+    background-image: linear-gradient(#7F8688,#929D9E);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 /* Wrapping element */
@@ -46,9 +48,14 @@ card{
     }
 }
 
-.img-responsive{
+.img-full{
     height: 100vh;
     width: 100vw;
+}
+
+.well{
+    padding: 0;
+    border-radius:15px;
 }
 
 /*Card code*/
@@ -72,7 +79,7 @@ card{
 }
 
     .product-img img {
-        border-radius: 7px 0 0 7px;
+        border-radius: 15px;
         
     }
 
@@ -176,5 +183,6 @@ span {
     #card-row{
         margin:0 0 0 38px;
     }
+
 
     
