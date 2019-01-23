@@ -3,12 +3,17 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<h1 class="text-center" >Purchase a Card</h1>
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+
+
+
+<h1 class="text-center">Purchase a Card</h1>
 
 @foreach (var card in Model)
 {
-        <div class="card col-sm-4 text-center">
+    @*<div class="card col-sm-4 text-center">
             <img class="img" src="@card.ImageUrl" alt="Card image cap">
 
             <div class="card-body">
@@ -23,6 +28,24 @@
                     <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Cart")'">Add To Cart</button>
                 </form>
             </div>
+        </div>*@
+
+
+<div class="wrapper col-sm-6">
+    <div class="product-img">
+        <img src="@card.ImageUrl" height="420" width="327">
+    </div>
+    <div class="product-info">
+        <div class="product-text">
+            <h1>@card.Name</h1>
+            @*<h2>by studio and friends</h2>*@
+            <p>@card.Description</p>
         </div>
+        <div class="product-price-btn">
+            <p><span>@card.Price.ToString("c")</span>$</p>
+            <button class="button" onclick="location.href='@Url.Action("Index", "Cart")'">buy now</button>
+        </div>
+    </div>
+</div>
 }
 
