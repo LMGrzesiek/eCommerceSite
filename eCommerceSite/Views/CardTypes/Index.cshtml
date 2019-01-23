@@ -13,7 +13,8 @@
 
 @foreach (var card in Model)
 {
-    @*<div class="card col-sm-4 text-center">
+    @*OLD CARD CODE
+        <div class="card col-sm-4 text-center">
             <img class="img" src="@card.ImageUrl" alt="Card image cap">
 
             <div class="card-body">
@@ -30,22 +31,30 @@
             </div>
         </div>*@
 
-
 <div class="wrapper col-sm-6">
     <div class="product-img">
-        <img src="@card.ImageUrl" height="420" width="327">
+        <img src="@card.ImageUrl" height="420" width="310">
     </div>
     <div class="product-info">
         <div class="product-text">
             <h1>@card.Name</h1>
             @*<h2>by studio and friends</h2>*@
             <p>@card.Description</p>
+            <p><span>@card.Price.ToString("c")</span></p>
+
         </div>
-        <div class="product-price-btn">
-            <p><span>@card.Price.ToString("c")</span>$</p>
-            <button class="button" onclick="location.href='@Url.Action("Index", "Cart")'">buy now</button>
+        <div style="text-align: left">
+            <form class="form-inline" asp-action="add" asp-controller="CardTypes" method="get">
+                <div class="row" id="card-row">
+                    <label for="quantity">Quantity</label>
+                    <input class="inline-form-control" type="number" value="1" min="1" max="@card.Quantity" />
+                </div>
+                <input type="hidden" value="@card.CardID" name="id" />
+                <div class="product-price-btn">
+                    <button class="button" onclick="location.href='@Url.Action("Index", "Cart")'">buy now</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 }
-
