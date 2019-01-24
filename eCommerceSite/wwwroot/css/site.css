@@ -4,15 +4,14 @@ for details on configuring this project to bundle and minify static web assets. 
 
 
 body {
+    color: white;
     margin-top: 51px;
     padding: 0;
     font-family: 'Cardo', serif;
-    background-image: linear-gradient(#7F8688,#929D9E);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     background-color: #0B172A;
     background-size: cover;
 }
+
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
@@ -21,10 +20,10 @@ body {
     margin: 4em auto;
     font-size: 20px;
     line-height: 30px;
-    text-align: justify;*/
+    text-align: justify;
     background-color: #0B172A;
     background-size: cover;
-    padding-top: 20px;
+    padding-top: 20px;*/
 }
 
 .navbar{
@@ -39,14 +38,7 @@ body {
         color: black;
     }
 
-card{
-    
-    text-align:center;
-}
 
-.card-body{
-    width: 100%;
-}
 
 /* QR code generator */
 #qrCode {
@@ -75,21 +67,10 @@ card{
     border-radius: 15px;
     -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+    background-color: lightgray;
 }
 
-/*Card code*/
-/*.wrapper {
-    height: 420px;
-    width: 48%;
-    margin: 50px 1%;
-    border-radius: 15px;
-    /* VIA CSS MATIC https://goo.gl/cIbnS */
-    /*-webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
-    box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
-    background-color: white;
-    padding: 0;
-}*/
+
 
 .product-img {
     float: left;
@@ -171,12 +152,7 @@ card{
         color: #BC4132;
     }
 
-span {
-    display: inline-block;
-    height: 50px;
-    font-family: 'Suranna', serif;
-    font-size: 34px;
-}
+
 
 .product-price-btn button {
     float: left;
@@ -223,10 +199,7 @@ article {
     padding: 0;
 }
 
-h1 {
-    font-size: 1.75rem;
-    margin: 0 0 0.75rem 0;
-}
+
 
 /* Pattern styles */
 .container {

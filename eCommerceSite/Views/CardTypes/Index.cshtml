@@ -5,7 +5,7 @@
 }
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+<link rel="stylesheet" type="text/css" href="~/css/site.css">
 
 
 
@@ -13,60 +13,33 @@
 
 @foreach (var card in Model)
 {
-    @*OLD CARD CODE
-        <div class="card col-sm-4 text-center">
-            <img class="img" src="@card.ImageUrl" alt="Card image cap">
+    <div class="col-xs-12 col-sm-6">
+        <div class="well">
+            <div class="row">
 
-            <div class="card-body">
-                <h2 class="card-title">@card.Name</h2>
-                <p class="card-text">@card.Price.ToString("c")</p>
-                <p class="card-text">@card.Description</p>
-
-                <form class="form-inline" asp-action="add" asp-controller="CardTypes" method="get">
-                    <label for="quantity">Quantity</label>
-                    <input class="form-control" type="number" value="1" min="1" max="10" name="quantity">
-                    <input type="hidden" value="@card.CardID" name="id" />
-                    <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Cart")'">Add To Cart</button>
-                </form>
-            </div>
-        </div>*@
-
-<div class="col-xs-12 col-sm-6">
-    <div class="well">
-        <div class="row">
-
-            <div class="col-xs-12 col-lg-6">
-                <div class="product-img">
-                    <img src="@card.ImageUrl" height="420" width="310">
+                <div class="col-xs-12 col-lg-6">
+                    <div class="product-img">
+                        <img src="@card.ImageUrl" height="420" width="310">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-lg-6">
+                    <h1>@card.Name</h1>
+                    <p>@card.Description</p>
+                    <p>@card.Price.ToString("c")</p>
+                    <form class="form-inline" asp-action="add" asp-controller="CardTypes" method="get">
+                        <div class="row" id="card-row">
+                            <label for="quantity">Quantity</label>
+                            <input class="inline-form-control" type="number" value="1" min="1" max="@card.Quantity" />
+                        </div>
+                        <input type="hidden" value="@card.CardID" name="id" />
+                        <div class="product-price-btn">
+                            <button class="button" onclick="location.href='@Url.Action("Index", "Cart")'">Buy Now</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="col-xs-12 col-lg-6">
-                <h1>@card.Name</h1>
-                @*<h2>by studio and friends</h2>*@
-                <p>@card.Description</p>
-                <p><span>@card.Price.ToString("c")</span></p>
-                <form class="form-inline" asp-action="add" asp-controller="CardTypes" method="get">
-                    <div class="row" id="card-row">
-                        <label for="quantity">Quantity</label>
-                        <input class="inline-form-control" type="number" value="1" min="1" max="@card.Quantity" />
-                    </div>
-                    <input type="hidden" value="@card.CardID" name="id" />
-                    <div class="product-price-btn">
-                        <button class="button" onclick="location.href='@Url.Action("Index", "Cart")'">buy now</button>
-                    </div>
-                </form>
-            </div>
         </div>
+
     </div>
-    @*
-        <div class="product-info">
-            <div class="product-text">
-
-
-            </div>
-            <div style="text-align: left">
-
-            </div>
-        </div>*@
-</div>
 }
+
