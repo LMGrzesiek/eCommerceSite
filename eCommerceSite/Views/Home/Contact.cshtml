@@ -1,17 +1,28 @@
 ﻿@{
     ViewData["Title"] = "Contact";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+@section Wide
+    {
+    <section class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <img src="~/images/map.jpg" class="img-responsive" id="map" alt="map" />
+            </div>
+            <div class="col-xs-6" id="contactInfo">
+                <div class="row">
+                    <h1>Jace's Place</h1>
+                </div>
+                <div class="row">
+                    <h3>422 E Ohio St. / Chicago, IL 60654</h3>
+                    <h3>(444) 444 - 4444 / jace@tms.com</h3>
+                </div>
+                <button type="button" class="btn-lg btn-">Browse for Inspiration</button>
+            </div>
+        </div>
+    </section>
+}
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
 
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">JaceTMS@worldwake.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+
+
+

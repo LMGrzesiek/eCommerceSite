@@ -4,7 +4,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 
 body {
-    margin: 0;
+    margin-top: 51px;
     padding: 0;
     font-family: 'Cardo', serif;
     background-image: linear-gradient(#7F8688,#929D9E);
@@ -14,13 +14,13 @@ body {
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
-.body-content {
+/*.body-content {
     width: 94%;
     margin: 4em auto;
     font-size: 20px;
     line-height: 30px;
     text-align: justify;
-}
+}*/
 
 li{
     transition: .2s;
@@ -48,14 +48,18 @@ card{
     }
 }
 
-.img-full{
-    height: 100vh;
+.landing {
+    height: 92vh;
     width: 100vw;
+    background-image: url("/images/landscape.png");
+    background-size: cover;
 }
 
-.well{
-    padding: 0;
-    border-radius:15px;
+.well {
+    padding: 10px;
+    border-radius: 15px;
+    -webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
 }
 
 /*Card code*/
@@ -80,11 +84,12 @@ card{
 
     .product-img img {
         border-radius: 15px;
+        padding: 10px;
         
     }
 
 .product-info {
-    float: left;
+    /*float: left;*/
     height: 420px;
     width: 50%;
     border-radius: 0 7px 10px 7px;
@@ -184,5 +189,64 @@ span {
         margin:0 0 0 38px;
     }
 
+#map{
+    height:90vh;
+}
 
-    
+section {
+    color: #fff;
+    text-align: center;
+}
+
+article {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 0;
+}
+
+h1 {
+    font-size: 1.75rem;
+    margin: 0 0 0.75rem 0;
+}
+
+/* Pattern styles */
+.container {
+    display: table;
+    width: 100%;
+}
+
+.left-half {
+    background-color: #ff9e2c;
+    position: absolute;
+    left: 0px;
+    width: 50%;
+    padding:0;
+}
+
+.right-half {
+    background-color: #b6701e;
+    position: absolute;
+    right: 0px;
+    width: 50%;
+}
+
+#contactInfo {
+    background-color: steelblue;
+    height: 92vh;
+    padding: 10% 0;
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+}
+#contactInfo h1{
+    font-size: 6em;
+    padding: 20px;
+}
+#contactInfo h3{
+    font-size: 1.5em;
+    padding-top: 20px;
+}
+#contactInfo button{
+    margin: 30px;
+}
