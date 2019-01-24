@@ -39,7 +39,9 @@ namespace eCommerceSite
 
             services.AddDbContext<eCommerceContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("eCommerceConnection")));
+                    Configuration.GetConnectionString("eCommerceConnection")
+                //options.UseInMemoryDatabase("Default")
+                ));
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<eCommerceContext>();
