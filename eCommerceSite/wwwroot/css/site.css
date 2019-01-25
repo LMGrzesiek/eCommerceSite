@@ -13,30 +13,20 @@ body {
 }
 
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    /*width: 94%;
-    margin: 4em auto;
-    font-size: 20px;
-    line-height: 30px;
-    text-align: justify;
-    background-color: #0B172A;
-    background-size: cover;
-    padding-top: 20px;*/
-}
+
 
 .navbar{
-    background-color: black;
-    border-color: black;
+    background-color: #bc4132;
+    border-color: #bc4132;
 }
-.navbar a{
+.navbar a, icon-bar{
     color: white;
 }
 
     .navbar a:hover {
         color: black;
     }
+    
 
 
 
@@ -50,6 +40,18 @@ body {
     /* Hide captions */
     .carousel-caption {
         display: none;
+       
+    }
+    .contact-map{
+        display:none;
+        margin: 0;
+    }
+    .contact-wrap{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
     }
 }
 
@@ -70,7 +72,9 @@ body {
     background-color: lightgray;
     color: black;
 }
-
+.navbar icon-bar{
+    color: white;
+}
 
 
 .product-img {
@@ -149,7 +153,6 @@ body {
         margin: 0 0 0 38px;
         font-size: 28px;
         font-weight: lighter;
-        /*color: #474747;*/
         color: #BC4132;
     }
 
@@ -239,4 +242,8 @@ article {
 }
 #contactInfo button{
     margin: 30px;
+    background-color: #bc4132;
+    border-color: white;
 }
+
+
