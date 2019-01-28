@@ -19,18 +19,19 @@ body {
 
 
 
-.navbar{
+.navbar {
     background-color: #bc4132;
     border-color: #bc4132;
 }
-.navbar a, icon-bar{
-    color: white;
-}
 
-    .navbar a:hover {
-        color: black;
+    .navbar a, icon-bar {
+        color: white;
     }
-    
+
+        .navbar a:hover {
+            color: black;
+        }
+
 
 
 
@@ -40,22 +41,23 @@ body {
     /* Hide captions */
     .carousel-caption {
         display: none;
-       
     }
-    .contact-map{
-        display:none;
+
+    .contact-map {
+        display: none;
         margin: 0;
-        
     }
-    .contact-wrap{
-        display:flex;
+
+    .contact-wrap {
+        display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
         width: 100%;
         margin: 0;
     }
-    .landing{
+
+    .landing {
         background-image: url("/images/mobilelandscape.jpg");
     }
 }
@@ -77,7 +79,8 @@ body {
     background-color: lightgray;
     color: black;
 }
-.navbar icon-bar{
+
+.navbar icon-bar {
     color: white;
 }
 
@@ -91,7 +94,6 @@ body {
     .product-img img {
         border-radius: 15px;
         padding: 10px;
-        
     }
 
 .product-info {
@@ -142,11 +144,9 @@ body {
 
 .product-price-btn {
     height: 103px;
-    width: 327px;
+    width: 358px;
     margin-top: 17px;
-    position: center;
     align-content: center;
-    
 }
 
     .product-price-btn p {
@@ -163,35 +163,35 @@ body {
 
 
 
-.product-price-btn button {
-    float: left;
-    display: inline-block;
-    height: 50px;
-    width: 176px;
-    margin: 0 40px 0 38px;
-    box-sizing: border-box;
-    border: transparent;
-    border-radius: 60px;
-    font-family: 'Raleway', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: #ffffff;
-    background-color: #BC4132;
-    cursor: pointer;
-    outline: none;
+    .product-price-btn button {
+        display: inline-block;
+        height: 50px;
+        width: 176px;
+        margin: 0;
+        box-sizing: border-box;
+        border: transparent;
+        border-radius: 60px;
+        font-family: 'Raleway', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #ffffff;
+        background-color: #BC4132;
+        cursor: pointer;
+        outline: none;
+    }
+
+        .product-price-btn button:hover {
+            background-color: #d85b4b;
+        }
+
+#card-row {
+    margin: 0;
 }
 
-    .product-price-btn button:hover {
-        background-color: #d85b4b;
-    }
-    #card-row{
-        margin:0 0 0 38px;
-    }
-
-#map{
-    height:90vh;
+#map {
+    height: 90vh;
 }
 
 section {
@@ -221,7 +221,7 @@ article {
     position: absolute;
     left: 0px;
     width: 50%;
-    padding:0;
+    padding: 0;
 }
 
 .right-half {
@@ -237,18 +237,27 @@ article {
     padding: 10% 0;
     text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
 }
-#contactInfo h1{
-    font-size: 6em;
-    padding: 20px;
-}
-#contactInfo h3{
-    font-size: 1.5em;
-    padding-top: 20px;
-}
-#contactInfo button{
-    margin: 30px;
-    background-color: #bc4132;
-    border-color: white;
-}
 
+    #contactInfo h1 {
+        font-size: 6em;
+        padding: 20px;
+    }
 
+    #contactInfo h3 {
+        font-size: 1.5em;
+        padding-top: 20px;
+    }
+
+    #contactInfo button {
+        margin: 30px;
+        background-color: #bc4132;
+        border-color: white;
+    }
+
+    .card-info{
+        text-align:center;
+        padding-top:10%;
+        padding-bottom: 10%;
+        padding-left: 0;
+        padding-right: 0;
+    }
