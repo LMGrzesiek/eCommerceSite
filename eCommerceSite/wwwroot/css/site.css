@@ -12,6 +12,10 @@ body {
     background-size: cover;
 }
 
+/* not working*/
+.contact-map {
+    padding-left: 0;
+}
 
 
 
@@ -30,10 +34,6 @@ body {
 
 
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
-}
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
@@ -45,6 +45,7 @@ body {
     .contact-map{
         display:none;
         margin: 0;
+        
     }
     .contact-wrap{
         display:flex;
@@ -52,13 +53,17 @@ body {
         align-items: center;
         height: 100%;
         width: 100%;
+        margin: 0;
+    }
+    .landing{
+        background-image: url("/images/mobilelandscape.jpg");
     }
 }
 
 .landing {
     height: 92vh;
     width: 100vw;
-    background-image: url("/images/landscape.png");
+    background-image: url("/images/landscape2.png");
     background-size: cover;
 }
 
