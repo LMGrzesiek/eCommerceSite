@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/site.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+
 
 </head>
 <body>
@@ -22,10 +25,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="CardTypes" asp-action="Index">Cards</a></li>
-                    <li><a asp-area="" asp-controller="Cart" asp-action="Index">Cart</a></li>
+                    <li><a asp-area="" asp-controller="Cart" asp-action="Index"><i class="fas fa-cart-arrow-down"></i></a></li>
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
