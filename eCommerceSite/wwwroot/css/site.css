@@ -72,6 +72,12 @@ body {
         width: 100%;
         margin: 0;
     }
+    .landing{
+        background-image:url("/images/LandscapeLogo.png");
+        background-position:center;
+
+
+    }
 
     
     
