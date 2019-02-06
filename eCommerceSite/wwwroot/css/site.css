@@ -21,9 +21,10 @@ body {
 
 
 .navbar {
-    background-color: #bc4132;
-    border-color: #bc4132;
-    
+    /*background-color: #bc4132;
+    border-color: #bc4132;*/
+    background-color: #5E0D5C;
+    border-color: #5E0D5C;
 }
     
 
@@ -72,18 +73,19 @@ body {
         margin: 0;
     }
 
-    .landing {
-        background-image: url("/images/mobilelandscape.jpg");
-    }
+    
     
 }
 
 .landing {
     height: 92vh;
     width: 100vw;
-    background-image: url("/images/landscape2.png");
+    background-image: url("/images/LandscapeLogo.png");
     background-size: cover;
 }
+
+
+
 
 .well {
     margin: 10px;
@@ -174,7 +176,7 @@ body {
         margin: 0 0 0 38px;
         font-size: 28px;
         font-weight: lighter;
-        color: #BC4132;
+        color: #5E0D5C;
     }
 
 
@@ -193,7 +195,7 @@ body {
         text-transform: uppercase;
         letter-spacing: 0.2em;
         color: #ffffff;
-        background-color: #BC4132;
+        background-color: #5E0D5C;
         cursor: pointer;
         outline: none;
     }
@@ -266,7 +268,7 @@ article {
 
     #contactInfo button {
         margin: 30px;
-        background-color: #bc4132;
+        background-color: #5E0D5C;
         border-color: white;
     }
 
@@ -278,5 +280,8 @@ article {
         padding-right: 15px;
     }
     .card-img{
+        text-align: center;
+    }
+    h1{
         text-align: center;
     }
